@@ -1,29 +1,41 @@
+"""Задание: поиск сокровища с помощью get_attribute
+В данной задаче вам нужно с помощью роботов решить ту же математическую задачу, как и в прошлом задании. Но теперь значение переменной х спрятано в "сундуке", точнее, значение хранится в атрибуте valuex у картинки с изображением сундука.
+
+Ваша программа должна:
+
+Открыть страницу http://suninjuly.github.io/get_attribute.html.
+Найти на ней элемент-картинку, который является изображением сундука с сокровищами.
+Взять у этого элемента значение атрибута valuex, которое является значением x для задачи.
+Посчитать математическую функцию от x (сама функция остаётся неизменной).
+Ввести ответ в текстовое поле.
+Отметить checkbox "I'm the robot".
+Выбрать radiobutton "Robots rule!".
+Нажать на кнопку "Submit".
+Для вычисления значения выражения в п.4 используйте функцию calc(x) из предыдущей задачи.
+
+Если все сделано правильно и достаточно быстро (в этой задаче тоже есть ограничение по времени), вы увидите окно с числом. Скопируйте его в поле ниже и нажмите кнопку "Submit", чтобы получить баллы за задание."""
+
 from selenium import webdriver
 import math
 import time
 
-def calc(x):
+def calsulate(x):
     return str(math.log(abs(12 * math.sin(int(x)))))
-link = "http://suninjuly.github.io/math.html"
 try:
+    Links = "http://suninjuly.github.io/get_attribute.html"
     browser = webdriver.Chrome()
-    browser.get(link)
-    x_element = browser.find_element_by_css_selector("#input_value")
-    x = x_element.text
-    y = calc(x)
-    people_radio = browser.find_element_by_id("peopleRule")
-    people_checked = people_radio.get_attribute("checked")
-    print("value", people_checked)
-    assert people_checked is not None, "People radio is not selected by defaut"
-    answer = browser.find_element_by_css_selector("#answer")
-    answer.send_keys(y)
-    I_M_Robot = browser.find_element_by_css_selector("#robotCheckbox")
-    I_M_Robot.click()
-    Robot_Rules = browser.find_element_by_css_selector("#robotsRule")
-    Robot_Rules.click()
-    Submit = browser.find_element_by_css_selector(".btn")
-    Submit.click()
+    browser.get(Links)
+    val = browser.find_element_by_id("treasure")
+    val = val.get_attribute("valuex")
+    answer = browser.find_element_by_id("answer")
+    answer.send_keys(calsulate(val))
+    imRobots = browser.find_element_by_id("robotCheckbox")
+    imRobots.click()
+    RobotsRules = browser.find_element_by_id("robotsRule")
+    RobotsRules.click()
+    submit = browser.find_element_by_class_name("btn")
+    submit.click()
 
 finally:
-    time.sleep(3)
+    time.sleep(20)
     browser.quit()
